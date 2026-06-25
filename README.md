@@ -320,7 +320,7 @@ gnmic -a <junos-mgmt-ip>:32767 \
   -u <user> -p <password> \
   --insecure \
   --timeout 5m \
-  --encoding JSON_IETF \
+  --encoding PROTO \
   subscribe \
   --path /openconfig-network-instance:network-instances/network-instance[name=master]/protocols/protocol/bgp/neighbors/neighbor/state/neighbor-address \
   --mode once
@@ -330,7 +330,7 @@ If the same path works with `gnmic` but CNC reports `Unable to get feed`, check:
 
 - DLM device type and software version.
 - gNMI port.
-- gNMI encoding, for example `JSON_IETF` or `PROTO`.
+- gNMI encoding, `PROTO` was used for Junos
 - Whether the HP path includes the origin prefix expected by CNC 7.2.
 - Whether the metric is supported for the platform.
 
