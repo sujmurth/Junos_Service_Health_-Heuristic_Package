@@ -154,6 +154,22 @@ os_model: Junos
 
 This matters because CNC/DLM discovered the device as `Junos`, not `JUNOS`.
 
+For node-19, the DLM inventory details showed:
+
+```text
+Host name: node-19
+IP address: 172.20.163.40/25
+Vendor: Juniper Networks
+Product series: Juniper Networks vmx Routers
+Software type: Junos
+Software version: 22.3R1.11
+Capability: SNMP;YANG_CLI;GNMI
+```
+
+The screenshot below highlights the inventory view where CNC reports software type as `Junos`:
+
+![CNC DLM inventory showing node-19 software type as Junos](images/dlm-node-19-junos-software-type.png)
+
 ### OpenConfig Origin Prefix
 
 For CNC 7.2, OpenConfig HP sensor paths include the origin prefix:
