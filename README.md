@@ -267,8 +267,6 @@ The value `7` represents `lowerLayerDown` and is treated as `down` so CNC report
 | `metric.route.vrf.connected custom` | OpenConfig BGP `global/state/total-prefixes` under the VPN network instance. |
 | `metric.route.vrf.local custom` | OpenConfig BGP `global/state/total-prefixes` under the VPN network instance. |
 
-Note: IOS XR exposes separate local, connected, and BGP RIB protocol counters through native models. The Junos OpenConfig implementation in this HP uses an available BGP prefix signal to avoid feed errors, but it is not a perfect semantic equivalent of the IOS XR RIB counter split.
-
 ### Device Health
 
 | Metric | Junos collection |
@@ -305,8 +303,7 @@ Junos does not expose the same IOS XR SR-PM operational model, so these checks a
 ## Import Order
 
 Recommended import sequence:
-
-1. Stop monitoring for the target L3VPN service.
+1. Provision L3VPN Service with Cisco IOSXR and HPE ( formerly Juniper )
 2. Upload `junos-pcep-cli-aggregate-v8-no-xml-helper.tar.gz` as a Data Collector aggregate package.
 3. Import the custom HP content from `custom-hp-172.20.163.27-2026-06-24/custom/`.
 4. Confirm the Junos device in DLM uses the expected gNMI port and encoding.
@@ -337,36 +334,9 @@ If the same path works with `gnmic` but CNC reports `Unable to get feed`, check:
 - Whether the HP path includes the origin prefix expected by CNC 7.2.
 - Whether the metric is supported for the platform.
 
-## Common Errors and Fixes
-
-| Error | Likely cause | Fix |
-| --- | --- | --- |
-| `Device node-19 not found in DLM inventory or does not have required information` | Device inventory missing software type, software version, or capability data. | Fix DLM inventory and confirm software type is `Junos`. |
-| `Unable to get feed from device for metric.bgp...` | gNMI path, origin, encoding, or collector validation mismatch. | Use `openconfig:` HP paths and verify with `gnmic`. |
-| `Unable to get feed from device for metric.interface...` | Service interface label does not match Junos operational `ifName`. | Use plugin-resolved `interfaceId` and `subInterfaceId`. |
-| `Unable to get feed from device for metric.sr.te.pcc.peer.addrs` | Junos PCEP collection package missing or not matched. | Upload the aggregate CLI package and restart monitoring. |
-| Data Collector upload says archive has no top-level collector directory | Aggregate package layout is wrong. | Ensure the archive contains top-level `cli/`. |
-| Data Collector upload says extension must be `.tar.gz` | Wrong archive format. | Upload `.tar.gz` for aggregate package. |
-
 ## Validation Target
 
-For `VPN-4003`, the expected result is that Junos `node-19` service health moves from collection failures to meaningful service symptoms.
-
-For example, if the router reports:
-
-```text
-show interfaces et-0/0/3.4003
-Flags: Device-Down
-```
-
-Then CNC should show a real degraded symptom such as:
-
-```text
-VPN Interface et-0/0/3.4003 Operational status is not up.
-```
+For `VPN-4003`, the expected result is that Junos `node-19` service health moves from collection failures to meaningful service symptoms. 
 
 That is a correct service health outcome. It means CNC collected the metric and evaluated the health expression, rather than failing to collect the feed.
 
-## Related Blog Draft
-
-A longer XRdocs-style explanation of the lab, service provisioning, route policy, SR-TE ODN behavior, verification steps, and metric design was prepared separately during this work. This repository is focused on the package artifacts and operational README.
