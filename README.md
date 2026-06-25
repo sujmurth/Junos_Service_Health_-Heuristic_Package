@@ -329,7 +329,7 @@ gnmic -a <junos-mgmt-ip>:32767 \
 If the same path works with `gnmic` but CNC reports `Unable to get feed`, check:
 
 - DLM device type and software version.
-- gNMI port.
+- gNMI port - 32767
 - gNMI encoding, `PROTO` was used for Junos
 - Whether the HP path includes the origin prefix expected by CNC 7.2.
 - Whether the metric is supported for the platform.
