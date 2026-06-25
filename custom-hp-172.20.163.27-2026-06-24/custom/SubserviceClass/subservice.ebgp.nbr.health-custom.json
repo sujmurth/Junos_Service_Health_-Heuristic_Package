@@ -1,0 +1,51 @@
+{
+ "id": "subservice.ebgp.nbr.health custom",
+ "name": "subservice.ebgp.nbr.health",
+ "namespace": "custom",
+ "description": "eBGP Session health.",
+ "params": [
+  {
+   "name": "device"
+  },
+  {
+   "name": "vrf"
+  },
+  {
+   "name": "bgp_nbr_type"
+  },
+  {
+   "name": "bgp_nbr_ipaddrs",
+   "type": "PARAM_TYPE_LIST"
+  }
+ ],
+ "rootExpressions": [
+  {
+   "evalExpression": "ListElemsAnd([ bgp_session_active for bgp_nbr_ipaddr in bgp_nbr_ipaddrs])"
+  }
+ ],
+ "dependencies": [
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "bgp_session_active",
+   "evalExpression": "bgp_session_state == 'up'",
+   "symptom": {
+    "formatString": "eBGP Session to neighbor {bgp_nbr_ipaddr} is not up for Device: {device}, Vrf: {vrf}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "bgp_session_state",
+   "evalExpression": "metric.bgp.vrf.session.state",
+   "paramMap": {
+    "device": "device",
+    "neighborIp": "bgp_nbr_ipaddr",
+    "vrf": "vrf"
+   }
+  }
+ ],
+ "createTimestamp": "1780080263700575443",
+ "updateTimestamp": "1780076843268496687",
+ "version": "6.0"
+}

@@ -1,0 +1,46 @@
+{
+ "id": "metric.sr.policy.pm.liveness.detection custom",
+ "name": "metric.sr.policy.pm.liveness.detection",
+ "namespace": "custom",
+ "description": "Fetch SR-PM Liveness Detection configuration.",
+ "displayLabel": "SR-PM Liveness Detection Config",
+ "parameters": {
+  "device": {
+   "description": "Target device."
+  },
+  "policyName": {
+   "description": "Name of the policy"
+  }
+ },
+ "mType": {
+  "stringT": {
+   "ifEmpty": "Disabled"
+  }
+ },
+ "implementations": {
+  "generic IOS XR": {
+   "CLITemplateMetric": {
+    "sensorPathConfig": "show segment-routing traffic-eng policy name {policyName} detail",
+    "sensorPathExact": "srpm/liveness-detection",
+    "devicePackageName": "showSegmentRoutingTEPolicy",
+    "functionName": "showSegmentRoutingTEPolicy"
+   },
+   "precedence": 100
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263676359363",
+ "version": "6.0"
+}

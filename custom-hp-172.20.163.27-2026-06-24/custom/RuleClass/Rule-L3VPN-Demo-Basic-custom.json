@@ -1,0 +1,132 @@
+{
+ "name": "Rule-L3VPN-Demo-Basic",
+ "namespace": "custom",
+ "id": "Rule-L3VPN-Demo-Basic custom",
+ "description": "Rule to generate Assurance Graph for Basic DEMO L3VPN services",
+ "matchCriteria": [
+  {
+   "configSource": "SOURCE_TYPE_NSO",
+   "configSubSource": [
+    "SUBSOURCE_SERVICE_CONFIG"
+   ],
+   "matchType": "MATCH_TYPE_XPATH",
+   "matchExpression": "//l3vpn"
+  }
+ ],
+ "dependencies": [
+  {
+   "name": "Vrf-Route-Health-Summary",
+   "id": "subservice.vrf.route.health.summary custom",
+   "ssClass": "subservice.vrf.route.health.summary",
+   "namespace": "custom",
+   "paramExtractionMechanism": {
+    "mode": "EXTRACT_MODE_XPATH"
+   },
+   "parameters": [
+    {
+     "name": "vpnServiceId",
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//l3vpn/name"
+      }
+     ]
+    }
+   ],
+   "subDependencies": [
+    "Vrf-Route-Health"
+   ]
+  },
+  {
+   "name": "Vrf-Route-Health",
+   "id": "subservice.vrf.route.health custom",
+   "ssClass": "subservice.vrf.route.health",
+   "namespace": "custom",
+   "type": "DEP_TYPE_LIST",
+   "paramExtractionMechanism": {
+    "mode": "EXTRACT_MODE_XPATH"
+   },
+   "parameters": [
+    {
+     "name": "device",
+     "iterator": true,
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//endpoint/pe-device"
+      }
+     ]
+    },
+    {
+     "name": "vpnIfAddrs",
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//endpoint/pe-ipv4-address"
+      }
+     ]
+    },
+    {
+     "name": "vrf",
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//l3vpn/name"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Device-Summary",
+   "id": "subservice.device.summary custom",
+   "ssClass": "subservice.device.summary",
+   "namespace": "custom",
+   "paramExtractionMechanism": {
+    "mode": "EXTRACT_MODE_XPATH"
+   },
+   "parameters": [
+    {
+     "name": "vpnServiceId",
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//l3vpn/name"
+      }
+     ]
+    }
+   ],
+   "subDependencies": [
+    "device-health-list"
+   ]
+  },
+  {
+   "name": "device-health-list",
+   "id": "subservice.device.health custom",
+   "ssClass": "subservice.device.health",
+   "namespace": "custom",
+   "type": "DEP_TYPE_LIST",
+   "paramExtractionMechanism": {
+    "mode": "EXTRACT_MODE_XPATH"
+   },
+   "parameters": [
+    {
+     "name": "device",
+     "iterator": true,
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//endpoint/pe-device"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "softRootDependencies": [
+  "Device-Summary"
+ ],
+ "createTimestamp": "1780080263783182067",
+ "updateTimestamp": "1780076873342636523",
+ "version": "6.0"
+}

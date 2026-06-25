@@ -1,0 +1,55 @@
+{
+ "id": "metric.pm.probe.status custom",
+ "name": "metric.pm.probe.status",
+ "namespace": "custom",
+ "description": "Determine the probe status in the SR-PM",
+ "displayLabel": "SR-PM probe status",
+ "parameters": {
+  "device": {
+   "description": "Device of interest"
+  },
+  "policyName": {
+   "description": "Name of the policy"
+  }
+ },
+ "mType": {
+  "stringT": {
+
+  }
+ },
+ "implementations": {
+  "generic IOS XR": {
+   "GNMIMetric": {
+    "sensorPathExact": "Cisco-IOS-XR-perf-meas-oper:performance-measurement/nodes/node/sr-policies/sr-policy-details/sr-policy-detail[policy-name={policyName}]/candidate-path/current-probe/probe-not-running-reason",
+    "sensorPathConfig": "Cisco-IOS-XR-perf-meas-oper:performance-measurement/nodes/node/sr-policies/sr-policy-details/sr-policy-detail"
+   }
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic IOS XR",
+   "notSupported": true,
+   "conditions": {
+    "dev_model": {
+     "type": "prefix_match",
+     "match": [
+      "Cisco IOS XRv"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263613262495",
+ "version": "6.0"
+}

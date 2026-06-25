@@ -1,0 +1,17 @@
+{
+ "id": "subservice.l3vpn.vpn.node.summary custom",
+ "name": "subservice.l3vpn.vpn.node.summary",
+ "namespace": "custom",
+ "description": "Provides node level health summary for all network features(KPI) monitored for a given vpn node",
+ "params": [
+  {
+   "name": "device"
+  },
+  {
+   "name": "vrf"
+  }
+ ],
+ "createTimestamp": "1780080263716501275",
+ "updateTimestamp": "1769642466158000497",
+ "version": "6.0"
+}

@@ -1,0 +1,93 @@
+{
+ "id": "subservice.vrf.route.health custom",
+ "name": "subservice.vrf.route.health",
+ "namespace": "custom",
+ "description": "Subservice checks whether local, connected and BGP routes are present in the VRF routing table",
+ "params": [
+  {
+   "name": "device"
+  },
+  {
+   "name": "vrf"
+  },
+  {
+   "name": "vpnIfAddrs",
+   "type": "PARAM_TYPE_LIST"
+  }
+ ],
+ "rootExpressions": [
+  {
+   "evalExpression": "connected_routes_healthy \u0026\u0026 local_routes_healthy \u0026\u0026 bgp_routes_healthy"
+  }
+ ],
+ "dependencies": [
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "connected_routes_healthy",
+   "evalExpression": "connected_routes == 1",
+   "symptom": {
+    "formatString": "Connected routes count({connected_routes}) doesn't match vpn interfaces configured(1) for VRF: {vrf}, Device: {device}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "local_routes_healthy",
+   "evalExpression": "local_routes == 1",
+   "symptom": {
+    "formatString": "Local routes count({local_routes}) doesn't match vpn interfaces configured(1) for VRF: {vrf}, Device: {device}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "bgp_routes_healthy",
+   "evalExpression": "bgp_routes \u003e= num_vpn_access_configured",
+   "symptom": {
+    "formatString": "{bgp_routes} BGP routes reported for VRF, Expected more than {num_vpn_access_configured}: {vrf}, Device: {device}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "num_vpn_access_configured",
+   "evalExpression": "Len(vpnIfAddrs) - 1"
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "connected_routes",
+   "evalExpression": "metric.route.vrf.connected",
+   "paramMap": {
+    "device": "device",
+    "vpnAddrs": "vpnIfAddrs",
+    "vrf": "vrf"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "local_routes",
+   "evalExpression": "metric.route.vrf.local",
+   "paramMap": {
+    "device": "device",
+    "vpnAddrs": "vpnIfAddrs",
+    "vrf": "vrf"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "bgp_routes",
+   "evalExpression": "metric.route.vrf.bgp",
+   "paramMap": {
+    "device": "device",
+    "vpnAddrs": "vpnIfAddrs",
+    "vrf": "vrf"
+   }
+  }
+ ],
+ "createTimestamp": "1780080263772929966",
+ "updateTimestamp": "1780076858296615546",
+ "version": "6.0"
+}

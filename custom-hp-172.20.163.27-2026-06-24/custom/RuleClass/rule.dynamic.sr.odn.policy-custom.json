@@ -1,0 +1,64 @@
+{
+ "name": "rule.dynamic.sr.odn.policy",
+ "namespace": "custom",
+ "id": "rule.dynamic.sr.odn.policy custom",
+ "description": "Rule to generate Sub Graph for dynamic ODN Sr Policies",
+ "matchCriteria": [
+  {
+   "configSource": "SOURCE_TYPE_DYNAMIC_PAYLOAD",
+   "matchType": "MATCH_TYPE_XPATH",
+   "matchPrefix": "rule_params",
+   "matchParams": [
+    "device",
+    "sr-policy-list",
+    "vpnServiceId"
+   ]
+  }
+ ],
+ "dependencies": [
+  {
+   "name": "SrPolicyHealth",
+   "id": "subservice.sr.policy.pm.health custom",
+   "ssClass": "subservice.sr.policy.pm.health",
+   "namespace": "custom",
+   "type": "DEP_TYPE_LIST",
+   "optional": true,
+   "paramExtractionMechanism": {
+    "mode": "EXTRACT_MODE_XPATH"
+   },
+   "parameters": [
+    {
+     "name": "device",
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//rule_params/device"
+      }
+     ]
+    },
+    {
+     "name": "vpnServiceId",
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//rule_params/vpnServiceId"
+      }
+     ]
+    },
+    {
+     "name": "policyName",
+     "iterator": true,
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "description": "TBD: can we avoid the device and use vpn service configs, iterator with parameterized",
+       "extractValue": "//rule_params/sr-policy-list"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "createTimestamp": "1780080263777559658",
+ "version": "6.0"
+}

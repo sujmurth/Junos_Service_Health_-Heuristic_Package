@@ -1,0 +1,61 @@
+{
+ "id": "metric.device.memory.free custom",
+ "name": "metric.device.memory.free",
+ "namespace": "custom",
+ "description": "Free memory(bytes) on a given device",
+ "displayLabel": "Free Memory Available",
+ "parameters": {
+  "device": {
+   "description": "Device of interest"
+  }
+ },
+ "mType": {
+  "intT": {
+
+  }
+ },
+ "mList": true,
+ "implementations": {
+  "SNMP IOS XR": {
+   "SNMPMetric": {
+    "oidPathConfig": "CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry",
+    "oidPathExact": "CISCO-ENHANCED-MEMPOOL-MIB:CISCO-ENHANCED-MEMPOOL-MIB/cempMemPoolTable/cempMemPoolEntry/cempMemPoolHCFree"
+   },
+   "precedence": 20
+  },
+  "generic Junos": {
+   "GNMIMetric": {
+    "sensorPathExact": "openconfig:components/component[name=Routing Engine0]/state/memory/available",
+    "sensorPathConfig": "openconfig:components/component"
+   },
+   "precedence": 20
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "SNMP IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic Junos",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "Junos"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263610517987",
+ "updateTimestamp": "1782170303787277485",
+ "version": "6.10"
+}

@@ -1,0 +1,95 @@
+{
+ "id": "metric.device.cpu.load custom",
+ "name": "metric.device.cpu.load",
+ "namespace": "custom",
+ "description": "CPU load(1 minute average) on the device",
+ "displayLabel": "CPU Load",
+ "parameters": {
+  "device": {
+   "description": "Target device."
+  }
+ },
+ "mType": {
+  "floatT": 0
+ },
+ "mList": true,
+ "implementations": {
+  "SNMP IOS XR": {
+   "SNMPMetric": {
+    "oidPathConfig": "CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry",
+    "oidPathExact": "CISCO-PROCESS-MIB:CISCO-PROCESS-MIB/cpmCPUTotalTable/cpmCPUTotalEntry/cpmCPUTotal1minRev"
+   },
+   "precedence": 20
+  },
+  "SNMP Junos": {
+   "SNMPMetric": {
+    "oidPathConfig": "JUNIPER-MIB:JUNIPER-MIB/jnxOperatingTable/jnxOperatingEntry",
+    "oidPathExact": "JUNIPER-MIB:JUNIPER-MIB/jnxOperatingTable/jnxOperatingEntry/jnxOperating1MinAvgCPU"
+   },
+   "precedence": 20
+  },
+  "generic IOS XR": {
+   "GNMIMetric": {
+    "sensorPathExact": "Cisco-IOS-XR-wdsysmon-fd-oper:system-monitoring/cpu-utilization[node-name=0/RP0/CPU0]/total-cpu-one-minute",
+    "sensorPathConfig": "Cisco-IOS-XR-wdsysmon-fd-oper:system-monitoring/cpu-utilization"
+   },
+   "precedence": 2
+  },
+  "generic Junos": {
+   "GNMIMetric": {
+    "sensorPathExact": "openconfig:system/cpus/cpu/state/total/instant",
+    "sensorPathConfig": "openconfig:system/cpus/cpu"
+   },
+   "precedence": 2
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "SNMP Junos",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "Junos"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic Junos",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "Junos"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "SNMP IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263609267435",
+ "updateTimestamp": "1782170303782390783",
+ "version": "6.10"
+}

@@ -1,0 +1,52 @@
+{
+ "id": "subservice.device.health custom",
+ "name": "subservice.device.health",
+ "namespace": "custom",
+ "description": "Monitor the health of the device.",
+ "params": [
+  {
+   "name": "device"
+  }
+ ],
+ "rootExpressions": [
+  {
+   "evalExpression": "cpu_healthy \u0026\u0026 memory_healthy"
+  }
+ ],
+ "symptom": {
+  "formatString": "Heavier than expected resource consumption on the Device: {device}",
+  "level": "DEGRADED",
+  "priority": 100
+ },
+ "dependencies": [
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "cpu_healthy",
+   "evalExpression": "ListElemsAverage(cpu_load) \u003c= CPU_THRESHOLD_MAX"
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "memory_healthy",
+   "evalExpression": "ListElemsSum(memory_free) \u003e MEMFREE_THRESHOLD_MIN || ListElemsSum(memory_free) \u003e MEMFREE_THRESHOLD_MIN_JUNIPER"
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "cpu_load",
+   "evalExpression": "metric.device.cpu.load",
+   "paramMap": {
+    "device": "device"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "memory_free",
+   "evalExpression": "metric.device.memory.free",
+   "paramMap": {
+    "device": "device"
+   }
+  }
+ ],
+ "createTimestamp": "1780080263758489743",
+ "updateTimestamp": "1780076863309197525",
+ "version": "6.0"
+}

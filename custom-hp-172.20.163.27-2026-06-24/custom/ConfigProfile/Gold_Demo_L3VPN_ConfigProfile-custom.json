@@ -1,0 +1,59 @@
+{
+ "id": "Gold_Demo_L3VPN_ConfigProfile custom",
+ "name": "Gold_Demo_L3VPN_ConfigProfile",
+ "namespace": "custom",
+ "description": "Thresholds to use for Gold DEMO L3VPN services",
+ "rules": [
+  {
+   "name": "Rule-L3VPN-Demo-Basic",
+   "namespace": "custom"
+  },
+  {
+   "name": "Rule-L3VPN-Demo",
+   "namespace": "custom"
+  }
+ ],
+ "values": {
+  "CPU_THRESHOLD_MAX": {
+   "description": "Threshold for acceptable CPU usage on the device.",
+   "type": "VAL_FLOAT",
+   "floatVal": {
+    "unit": "PERCENT",
+    "val": 70.5
+   }
+  },
+  "MEMFREE_THRESHOLD_MIN": {
+   "description": "Threshold for minimum free memory to be available on the device.",
+   "type": "VAL_FLOAT",
+   "floatVal": {
+    "unit": "BYTES",
+    "val": 2000000000
+   }
+  },
+  "MEMFREE_THRESHOLD_MIN_JUNIPER": {
+   "description": "Threshold for minimum free memory to be available on the device.",
+   "type": "VAL_FLOAT",
+   "floatVal": {
+    "unit": "BYTES",
+    "val": 2000
+   }
+  },
+  "VPN_INTF_PKT_DISCARDS_THRESHOLD": {
+   "description": "Acceptable delta of in(or out) packet discards expected between polling intervals",
+   "type": "VAL_INT",
+   "intVal": {
+    "val": "10"
+   }
+  },
+  "VPN_INTF_PKT_ERROR_THRESHOLD": {
+   "description": "Acceptable delta of in(or out) packet errors expected between polling intervals",
+   "type": "VAL_INT",
+   "intVal": {
+    "val": "10"
+   }
+  }
+ },
+ "createTimestamp": "1780080263790495197",
+ "updateTimestamp": "1780076873352620593",
+ "version": "6.0"
+}

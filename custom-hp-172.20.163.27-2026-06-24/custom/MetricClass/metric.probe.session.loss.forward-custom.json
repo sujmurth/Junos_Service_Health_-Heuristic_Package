@@ -1,0 +1,42 @@
+{
+ "id": "metric.probe.session.loss.forward custom",
+ "name": "metric.probe.session.loss.forward",
+ "namespace": "custom",
+ "description": "Loss reported by a given Probe Session in forward direction.",
+ "displayLabel": "Probe Loss Forward",
+ "parameters": {
+  "device": {
+   "description": "Device of interest"
+  },
+  "peerDevice": {
+   "description": "Destination or reflector"
+  },
+  "probeSessionId": {
+   "description": "Probe Session ID"
+  },
+  "proxyDevice": {
+   "description": "Proxy device to use to collect this metric"
+  },
+  "serviceID": {
+   "description": "service ID"
+  }
+ },
+ "implementations": {
+  "Accedian": {
+   "GNMITemplateMetric": {
+    "sensorPathExact": "accedian-session:object-type/twamp-sf/monitored-objects/monitored-object[monitored-object-id={probeSessionId}][direction=0]/metrics/packets-lost-pct",
+    "sensorPathConfig": "accedian-session:object-type/twamp-sf/monitored-objects/monitored-object[meta/data/name/ne_id_sender={device}]",
+    "sensorPathDeviceFeed": "accedian-session:object-type/twamp-sf/monitored-objects/monitored-object"
+   }
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "Accedian"
+  }
+ ],
+ "createTimestamp": "1780004603676779873",
+ "updateTimestamp": "1780080263693422231",
+ "version": "6.0",
+ "streamSubscriptionTag": "PCA_Probes"
+}

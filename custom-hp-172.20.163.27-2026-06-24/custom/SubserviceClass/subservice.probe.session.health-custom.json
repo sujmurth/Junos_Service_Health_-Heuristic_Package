@@ -1,0 +1,178 @@
+{
+ "id": "subservice.probe.session.health custom",
+ "name": "subservice.probe.session.health",
+ "namespace": "custom",
+ "description": "Determine health status by evaluating variance \u0026 latency reported by a given probe session",
+ "params": [
+  {
+   "name": "device"
+  },
+  {
+   "name": "peerDevice"
+  },
+  {
+   "name": "proxyDevice"
+  },
+  {
+   "name": "vpnServiceId"
+  },
+  {
+   "name": "probeSessionId"
+  }
+ ],
+ "rootExpressions": [
+  {
+   "evalExpression": "connectivity_exists \u0026\u0026 forward_latency_met_sla \u0026\u0026 reverse_latency_met_sla \u0026\u0026 forward_variance_met_sla \u0026\u0026 reverse_variance_met_sla  \u0026\u0026 forward_loss_met_sla \u0026\u0026 reverse_loss_met_sla"
+  }
+ ],
+ "dependencies": [
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "connectivity_exists",
+   "evalExpression": "forward_loss \u003c 100",
+   "symptom": {
+    "formatString": "Probes experiencing 100% packet loss: {device} -\u003e {peerDevice}. Check for VPN route reachability between these endpoints",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "forward_latency_met_sla",
+   "evalExpression": "(forward_latency \u003c PROBE_DELAY_THRESHOLD) || Not(connectivity_exists)",
+   "symptom": {
+    "formatString": "Latency crossed threshold for the forward direction: Latency: {forward_latency}, Device: {device} -\u003e Peer-Device: {peerDevice}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "reverse_latency_met_sla",
+   "evalExpression": "(reverse_latency \u003c PROBE_DELAY_THRESHOLD) || Not(connectivity_exists)",
+   "symptom": {
+    "formatString": "Latency crossed threshold for the reverse direction: Latency: {reverse_latency}, Peer-Device: {peerDevice} -\u003e  Device: {device}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "forward_variance_met_sla",
+   "evalExpression": "(forward_variance \u003c PROBE_VARIANCE_THRESHOLD) || Not(connectivity_exists)",
+   "symptom": {
+    "formatString": "Variance crossed threshold for the forward direction: Variance: {forward_variance}, Device: {device} -\u003e Peer-Device: {peerDevice}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "reverse_variance_met_sla",
+   "evalExpression": "(reverse_variance \u003c PROBE_VARIANCE_THRESHOLD) || Not(connectivity_exists)",
+   "symptom": {
+    "formatString": "Variance crossed threshold for the reverse direction: Variance: {reverse_variance}, Peer-Device: {peerDevice} -\u003e Device: {device}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "forward_loss_met_sla",
+   "evalExpression": "(forward_loss \u003c PROBE_LOSS_THRESHOLD) || Not(connectivity_exists)",
+   "symptom": {
+    "formatString": "Loss crossed threshold for the forward direction: loss: {forward_loss}, Device: {device} -\u003e Peer-Device: {peerDevice}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "reverse_loss_met_sla",
+   "evalExpression": "(reverse_loss \u003c PROBE_LOSS_THRESHOLD) || Not(connectivity_exists)",
+   "symptom": {
+    "formatString": "Loss crossed threshold for the reverse direction: loss: {reverse_loss}, Peer-Device: {peerDevice} -\u003e Device: {device}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "forward_latency",
+   "evalExpression": "metric.probe.session.delay.forward",
+   "paramMap": {
+    "device": "device",
+    "peerDevice": "peerDevice",
+    "probeSessionId": "probeSessionId",
+    "proxyDevice": "proxyDevice",
+    "serviceID": "vpnServiceId"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "reverse_latency",
+   "evalExpression": "metric.probe.session.delay.reverse",
+   "paramMap": {
+    "device": "device",
+    "peerDevice": "peerDevice",
+    "probeSessionId": "probeSessionId",
+    "proxyDevice": "proxyDevice",
+    "serviceID": "vpnServiceId"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "forward_variance",
+   "evalExpression": "metric.probe.session.variance.forward",
+   "paramMap": {
+    "device": "device",
+    "peerDevice": "peerDevice",
+    "probeSessionId": "probeSessionId",
+    "proxyDevice": "proxyDevice",
+    "serviceID": "vpnServiceId"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "reverse_variance",
+   "evalExpression": "metric.probe.session.variance.reverse",
+   "paramMap": {
+    "device": "device",
+    "peerDevice": "peerDevice",
+    "probeSessionId": "probeSessionId",
+    "proxyDevice": "proxyDevice",
+    "serviceID": "vpnServiceId"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "forward_loss",
+   "evalExpression": "metric.probe.session.loss.forward",
+   "paramMap": {
+    "device": "device",
+    "peerDevice": "peerDevice",
+    "probeSessionId": "probeSessionId",
+    "proxyDevice": "proxyDevice",
+    "serviceID": "vpnServiceId"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "reverse_loss",
+   "evalExpression": "metric.probe.session.loss.reverse",
+   "paramMap": {
+    "device": "device",
+    "peerDevice": "peerDevice",
+    "probeSessionId": "probeSessionId",
+    "proxyDevice": "proxyDevice",
+    "serviceID": "vpnServiceId"
+   }
+  }
+ ],
+ "createTimestamp": "1780004603737782640",
+ "updateTimestamp": "1780080263746489369",
+ "tags": [
+  "PROBE_SESSION"
+ ],
+ "version": "6.0"
+}

@@ -1,0 +1,14 @@
+{
+ "id": "subservice.path.sla.summary custom",
+ "name": "subservice.path.sla.summary",
+ "namespace": "custom",
+ "description": "Groups together all the Path SLA subservices.",
+ "params": [
+  {
+   "name": "vpnServiceId"
+  }
+ ],
+ "createTimestamp": "1780004603712683698",
+ "updateTimestamp": "1780080263721528862",
+ "version": "6.0"
+}

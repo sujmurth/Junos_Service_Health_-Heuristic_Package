@@ -1,0 +1,14 @@
+{
+ "id": "subservice.bgp.nbr.health.summary custom",
+ "name": "subservice.bgp.nbr.health.summary",
+ "namespace": "custom",
+ "description": "Groups together all the BGP neighbor health subservices that belong to a given VPN instance and provides a consolidated health status",
+ "params": [
+  {
+   "name": "vpnServiceId"
+  }
+ ],
+ "createTimestamp": "1780080263702988981",
+ "updateTimestamp": "1780076863304291342",
+ "version": "6.0"
+}

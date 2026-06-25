@@ -1,0 +1,135 @@
+{
+ "id": "subservice.interface.health custom",
+ "name": "subservice.interface.health",
+ "namespace": "custom",
+ "description": "Subservice to reflect interface health",
+ "params": [
+  {
+   "name": "device"
+  },
+  {
+   "name": "ifId"
+  },
+  {
+   "name": "interfaceId"
+  },
+  {
+   "name": "subInterfaceId"
+  }
+ ],
+ "rootExpressions": [
+  {
+   "evalExpression": "oper_up \u0026\u0026 low_in_errors \u0026\u0026 low_in_discards \u0026\u0026 low_out_errors \u0026\u0026 low_out_discards"
+  }
+ ],
+ "dependencies": [
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "oper_up",
+   "evalExpression": "interface_oper == 'up'",
+   "symptom": {
+    "formatString": "VPN Interface {ifId} Operational status is not up.",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "low_in_errors",
+   "evalExpression": "interface_oper != 'up' || CounterDelta(in_errors) \u003c VPN_INTF_PKT_ERROR_THRESHOLD",
+   "symptom": {
+    "formatString": "Interface health degraded. Device: {device}, InterfaceID: {ifId}. Incoming errors are higher({in_errors}) than expected({VPN_INTF_PKT_ERROR_THRESHOLD})",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "low_out_errors",
+   "evalExpression": "interface_oper != 'up' || CounterDelta(out_errors) \u003c VPN_INTF_PKT_ERROR_THRESHOLD",
+   "symptom": {
+    "formatString": "Interface health degraded. Device: {device}, InterfaceID: {ifId}. Outgoing errors are higher({out_errors}) than expected({VPN_INTF_PKT_ERROR_THRESHOLD})",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "low_in_discards",
+   "evalExpression": "interface_oper != 'up' || CounterDelta(in_discards) \u003c VPN_INTF_PKT_DISCARDS_THRESHOLD",
+   "symptom": {
+    "formatString": "Interface health degraded. Device: {device}, InterfaceID: {ifId}. Incoming packet discards are higher({in_discards}) than expected({VPN_INTF_PKT_DISCARDS_THRESHOLD})",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "low_out_discards",
+   "evalExpression": "interface_oper != 'up' || CounterDelta(out_discards) \u003c VPN_INTF_PKT_DISCARDS_THRESHOLD",
+   "symptom": {
+    "formatString": "Interface health degraded. Device: {device}, InterfaceID: {ifId}. Outgoing packet discards are higher({out_discards}) than expected({VPN_INTF_PKT_DISCARDS_THRESHOLD})",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "interface_oper",
+   "evalExpression": "metric.interface.oper",
+   "paramMap": {
+    "device": "device",
+    "gigEthIfId": "ifId",
+    "interfaceId": "interfaceId",
+    "subInterfaceId": "subInterfaceId"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "in_errors",
+   "evalExpression": "metric.interface.in.errors",
+   "paramMap": {
+    "device": "device",
+    "gigEthIfId": "ifId",
+    "interfaceId": "interfaceId",
+    "subInterfaceId": "subInterfaceId"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "out_errors",
+   "evalExpression": "metric.interface.out.errors",
+   "paramMap": {
+    "device": "device",
+    "gigEthIfId": "ifId",
+    "interfaceId": "interfaceId",
+    "subInterfaceId": "subInterfaceId"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "in_discards",
+   "evalExpression": "metric.interface.in.discards",
+   "paramMap": {
+    "device": "device",
+    "gigEthIfId": "ifId",
+    "interfaceId": "interfaceId",
+    "subInterfaceId": "subInterfaceId"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "out_discards",
+   "evalExpression": "metric.interface.out.discards",
+   "paramMap": {
+    "device": "device",
+    "gigEthIfId": "ifId",
+    "interfaceId": "interfaceId",
+    "subInterfaceId": "subInterfaceId"
+   }
+  }
+ ],
+ "createTimestamp": "1780080263755621599",
+ "updateTimestamp": "1780076868322720246",
+ "version": "6.0"
+}

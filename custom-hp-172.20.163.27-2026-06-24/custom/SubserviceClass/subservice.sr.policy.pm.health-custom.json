@@ -1,0 +1,232 @@
+{
+ "id": "subservice.sr.policy.pm.health custom",
+ "name": "subservice.sr.policy.pm.health",
+ "namespace": "custom",
+ "description": "SR Policy health status reflecting SR-PM SLA(if configured). Admin \u0026 Oper should be up. Oper should have stayed up since last polling. Delay \u0026 Variance should meet SLA if SR-PM is configured to measure delay. Liveness should be up if SR-PM is configured for Liveness.",
+ "params": [
+  {
+   "name": "device"
+  },
+  {
+   "name": "policyName"
+  },
+  {
+   "name": "vpnServiceId"
+  }
+ ],
+ "rootExpressions": [
+  {
+   "evalExpression": "admin_up \u0026\u0026 oper_up \u0026\u0026 no_oper_flip_flop "
+  },
+  {
+   "evalExpression": "srpm_delay_met_sla \u0026\u0026 srpm_variance_met_sla \u0026\u0026  probe_running \u0026\u0026 probe_status \u0026\u0026 packet_loss",
+   "activateCondition": "delay_config == 'Enabled'"
+  },
+  {
+   "evalExpression": "srpm_liveness_check_passed \u0026\u0026 probe_running",
+   "activateCondition": "liveness_detection == 'Enabled'"
+  }
+ ],
+ "dependencies": [
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "admin_up",
+   "evalExpression": "sr_policy_admin_status == 'up'",
+   "symptom": {
+    "formatString": "SR Policy(PM) is admin down. Device: {device} PolicyName: {policyName}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "oper_up",
+   "evalExpression": "oper_status_up || sr_policy_admin_status != 'up'",
+   "symptom": {
+    "formatString": "SR Policy(PM) is operationally down. Device: {device} PolicyName: {policyName}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "oper_status_up",
+   "evalExpression": "sr_policy_oper_status == 'up'"
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "no_oper_flip_flop",
+   "evalExpression": "CounterDelta(oper_up_time) \u003e 0 || Not(oper_status_up)",
+   "symptom": {
+    "formatString": "SR Policy(PM) operational status toggled since last device poll. Device: {device} PolicyName: {policyName}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "srpm_delay_met_sla",
+   "evalExpression": "(delay \u003c SRPM_DELAY_THRESHOLD) || Not(oper_status_up) || Not(probe_running)",
+   "symptom": {
+    "formatString": "SR-PM Delay threshold crossed for SR Policy(PM)! Device: {device}, PolicyName: {policyName}, Delay(one-way): {delay}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "srpm_variance_met_sla",
+   "evalExpression": "(variance \u003c SRPM_VARIANCE_THRESHOLD) || Not(oper_status_up) || Not(probe_running)",
+   "symptom": {
+    "formatString": "SR-PM Variance threshold crossed for SR Policy(PM)! Device: {device}, PolicyName: {policyName}, Variance: {variance}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "srpm_liveness_check_passed",
+   "evalExpression": "(liveness_session_state == 'up' ) || Not(oper_status_up) || Not(probe_running)",
+   "symptom": {
+    "formatString": "SR-PM reported liveness session state down for SR Policy(PM) for Device: {device}, PolicyName: {policyName}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "probe_running",
+   "evalExpression": "probe_not_running_reason == 'probe-is-running'",
+   "symptom": {
+    "formatString": "PM Measurement error: SR-PM failed to run probes: {probe_not_running_reason}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "packet_loss",
+   "evalExpression": "(((tx_packets - rx_packets) * 100) \u003e (SRPM_PACKET_LOSS_THRESHOLD * tx_packets)) \u0026\u0026 oper_status_up \u0026\u0026 probe_running \u0026\u0026 probe_status",
+   "symptom": {
+    "formatString": "SR-PM Packet Loss threshold crossed for SR Policy(PM)! Device: {device}, PolicyName: {policyName}, TxPackets: {tx_packets}, RxPackets: {rx_packets}",
+    "level": "DEGRADED",
+    "priority": 255,
+    "raiseWhen": true
+   }
+  },
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "probe_status",
+   "evalExpression": "(delay \u003e 0) || Not(probe_running)",
+   "symptom": {
+    "formatString": "PM Measurement error: Probe Timestamps do not match",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "sr_policy_admin_status",
+   "evalExpression": "metric.sr.policy.pcc.admin.state",
+   "paramMap": {
+    "device": "device",
+    "policyName": "policyName"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "sr_policy_oper_status",
+   "evalExpression": "metric.sr.policy.pcc.oper.state",
+   "paramMap": {
+    "device": "device",
+    "policyName": "policyName"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "oper_up_time",
+   "evalExpression": "metric.sr.policy.pcc.oper.up.time",
+   "paramMap": {
+    "device": "device",
+    "policyName": "policyName"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "delay_config",
+   "evalExpression": "metric.sr.policy.pm.delay.measurement",
+   "paramMap": {
+    "device": "device",
+    "policyName": "policyName"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "delay",
+   "evalExpression": "metric.sr.pm.delay",
+   "paramMap": {
+    "device": "device",
+    "policyName": "policyName"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "variance",
+   "evalExpression": "metric.sr.pm.variance",
+   "paramMap": {
+    "device": "device",
+    "policyName": "policyName"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "probe_not_running_reason",
+   "evalExpression": "metric.pm.probe.status",
+   "paramMap": {
+    "device": "device",
+    "policyName": "policyName"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "liveness_detection",
+   "evalExpression": "metric.sr.policy.pm.liveness.detection",
+   "paramMap": {
+    "device": "device",
+    "policyName": "policyName"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "liveness_session_state",
+   "evalExpression": "metric.sr.pm.liveness.state",
+   "paramMap": {
+    "device": "device",
+    "policyName": "policyName"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "tx_packets",
+   "evalExpression": "metric.sr.pm.tx.packets",
+   "paramMap": {
+    "device": "device",
+    "policyName": "policyName"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "rx_packets",
+   "evalExpression": "metric.sr.pm.rx.packets",
+   "paramMap": {
+    "device": "device",
+    "policyName": "policyName"
+   }
+  }
+ ],
+ "createTimestamp": "1780080263709396798",
+ "tags": [
+  "TRANSPORT_SUBSERVICES"
+ ],
+ "version": "6.0"
+}

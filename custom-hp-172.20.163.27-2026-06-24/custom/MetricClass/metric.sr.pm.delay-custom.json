@@ -1,0 +1,55 @@
+{
+ "id": "metric.sr.pm.delay custom",
+ "name": "metric.sr.pm.delay",
+ "namespace": "custom",
+ "description": "Report SR-PM Delay average for a given SR policy.",
+ "displayLabel": "SR-PM Delay",
+ "parameters": {
+  "device": {
+   "description": "Device of interest"
+  },
+  "policyName": {
+   "description": "Name of the policy"
+  }
+ },
+ "mType": {
+  "intT": {
+   "ifEmpty": "0"
+  }
+ },
+ "implementations": {
+  "generic IOS XR": {
+   "GNMIMetric": {
+    "sensorPathExact": "Cisco-IOS-XR-perf-meas-oper:performance-measurement/nodes/node/sr-policies/sr-policy-details/sr-policy-detail[policy-name={policyName}]/candidate-path/last-probe-results/probe-values/average",
+    "sensorPathConfig": "Cisco-IOS-XR-perf-meas-oper:performance-measurement/nodes/node/sr-policies/sr-policy-details/sr-policy-detail"
+   }
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic IOS XR",
+   "notSupported": true,
+   "conditions": {
+    "dev_model": {
+     "type": "prefix_match",
+     "match": [
+      "Cisco IOS XRv"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263617071001",
+ "version": "6.0"
+}

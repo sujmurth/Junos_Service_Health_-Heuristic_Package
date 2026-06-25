@@ -1,0 +1,14 @@
+{
+ "id": "subservice.vrf.route.health.summary custom",
+ "name": "subservice.vrf.route.health.summary",
+ "namespace": "custom",
+ "description": "Groups together all the VRF route health subservices.",
+ "params": [
+  {
+   "name": "vpnServiceId"
+  }
+ ],
+ "createTimestamp": "1780080263719163664",
+ "updateTimestamp": "1780076853283729750",
+ "version": "6.0"
+}

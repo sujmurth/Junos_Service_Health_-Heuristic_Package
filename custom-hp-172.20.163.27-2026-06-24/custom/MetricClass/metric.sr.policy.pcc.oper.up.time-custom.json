@@ -1,0 +1,61 @@
+{
+ "id": "metric.sr.policy.pcc.oper.up.time custom",
+ "name": "metric.sr.policy.pcc.oper.up.time",
+ "namespace": "custom",
+ "description": "Up time of PCC inititated SR policy.",
+ "displayLabel": "Oper up time",
+ "parameters": {
+  "device": {
+   "description": "Target device."
+  },
+  "policyName": {
+   "description": "Name of the policy"
+  }
+ },
+ "mType": {
+  "intT": {
+
+  }
+ },
+ "implementations": {
+  "generic IOS XE": {
+
+  },
+  "generic IOS XR": {
+   "CLITemplateMetric": {
+    "sensorPathConfig": "show segment-routing traffic-eng policy name {policyName} detail",
+    "sensorPathExact": "status/uptime",
+    "devicePackageName": "showSegmentRoutingTEPolicy",
+    "functionName": "showSegmentRoutingTEPolicy"
+   },
+   "precedence": 100
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic IOS XE",
+   "notSupported": true,
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "IOS XE"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263632920761",
+ "version": "6.0"
+}

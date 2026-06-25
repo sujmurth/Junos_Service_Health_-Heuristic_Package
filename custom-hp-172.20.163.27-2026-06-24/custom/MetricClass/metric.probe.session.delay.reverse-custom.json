@@ -1,0 +1,42 @@
+{
+ "id": "metric.probe.session.delay.reverse custom",
+ "name": "metric.probe.session.delay.reverse",
+ "namespace": "custom",
+ "description": "Delay reported by a given Probe Session in reverse direction.",
+ "displayLabel": "Probe Delay Reverse",
+ "parameters": {
+  "device": {
+   "description": "Device of interest"
+  },
+  "peerDevice": {
+   "description": "Destination or reflector"
+  },
+  "probeSessionId": {
+   "description": "Probe Session ID"
+  },
+  "proxyDevice": {
+   "description": "Proxy device to use to collect this metric"
+  },
+  "serviceID": {
+   "description": "service ID"
+  }
+ },
+ "implementations": {
+  "Accedian": {
+   "GNMITemplateMetric": {
+    "sensorPathExact": "accedian-session:object-type/twamp-sf/monitored-objects/monitored-object[monitored-object-id={probeSessionId}][direction=1]/metrics/delay-p95",
+    "sensorPathConfig": "accedian-session:object-type/twamp-sf/monitored-objects/monitored-object[meta/data/name/ne_id_sender={device}]",
+    "sensorPathDeviceFeed": "accedian-session:object-type/twamp-sf/monitored-objects/monitored-object"
+   }
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "Accedian"
+  }
+ ],
+ "createTimestamp": "1780004603695446535",
+ "updateTimestamp": "1780080263620056909",
+ "version": "6.0",
+ "streamSubscriptionTag": "PCA_Probes"
+}

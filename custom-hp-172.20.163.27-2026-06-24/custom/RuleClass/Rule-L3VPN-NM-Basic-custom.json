@@ -1,0 +1,26 @@
+{
+ "name": "Rule-L3VPN-NM-Basic",
+ "namespace": "custom",
+ "id": "Rule-L3VPN-NM-Basic custom",
+ "description": "Rule to generate Assurance Graph for Basic L3VPN services",
+ "matchCriteria": [
+  {
+   "configSource": "SOURCE_TYPE_NSO",
+   "configSubSource": [
+    "SUBSOURCE_SERVICE_CONFIG"
+   ],
+   "matchType": "MATCH_TYPE_XPATH",
+   "matchExpression": "//vpn-service[@xmlns='urn:ietf:params:xml:ns:yang:ietf-l3vpn-ntw']",
+   "serviceElementConfig": [
+    {
+     "serviceElementId": "//vpn-node={*}",
+     "serviceElementRule": "Rule-L3VPN-NM-VPN-Node-Basic",
+     "namespace": "custom"
+    }
+   ]
+  }
+ ],
+ "createTimestamp": "1780004603777164098",
+ "updateTimestamp": "1780080263780086772",
+ "version": "6.0"
+}

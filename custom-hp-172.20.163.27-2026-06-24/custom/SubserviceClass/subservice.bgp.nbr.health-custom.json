@@ -1,0 +1,48 @@
+{
+ "id": "subservice.bgp.nbr.health custom",
+ "name": "subservice.bgp.nbr.health",
+ "namespace": "custom",
+ "description": "BGP Neighbor health.",
+ "params": [
+  {
+   "name": "device"
+  }
+ ],
+ "rootExpressions": [
+  {
+   "evalExpression": "ListElemsAnd([ bgp_session_active for bgp_nbr_ipaddr in bgp_nbr_list])"
+  }
+ ],
+ "dependencies": [
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "bgp_session_active",
+   "evalExpression": "bgp_session_state == 'up'",
+   "symptom": {
+    "formatString": "BGP Session to neighbor {bgp_nbr_ipaddr} is not up for Device: {device}",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "bgp_session_state",
+   "evalExpression": "metric.bgp.session.state",
+   "paramMap": {
+    "device": "device",
+    "neighborIp": "bgp_nbr_ipaddr"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "bgp_nbr_list",
+   "evalExpression": "metric.bgp.neighbors.ipaddr.list",
+   "paramMap": {
+    "device": "device"
+   }
+  }
+ ],
+ "createTimestamp": "1780080263706993866",
+ "updateTimestamp": "1780076863314126906",
+ "version": "6.0"
+}

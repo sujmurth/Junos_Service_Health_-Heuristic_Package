@@ -1,0 +1,67 @@
+{
+ "id": "metric.sr.policy.pcc.oper.state custom",
+ "name": "metric.sr.policy.pcc.oper.state",
+ "namespace": "custom",
+ "description": "Fetch Operational status of PCC inititated SR policy.",
+ "displayLabel": "Oper state",
+ "parameters": {
+  "device": {
+   "description": "Target device."
+  },
+  "policyName": {
+   "description": "Name of the policy"
+  }
+ },
+ "mType": {
+  "stringT": {
+
+  }
+ },
+ "implementations": {
+  "generic IOS XE": {
+
+  },
+  "generic IOS XR": {
+   "CLITemplateMetric": {
+    "sensorPathConfig": "show segment-routing traffic-eng policy name {policyName} detail",
+    "sensorPathExact": "status/operational",
+    "devicePackageName": "showSegmentRoutingTEPolicy",
+    "functionName": "showSegmentRoutingTEPolicy"
+   },
+   "precedence": 100,
+   "valMapping": {
+    "values": {
+     "0": "down",
+     "1": "up"
+    }
+   }
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic IOS XE",
+   "notSupported": true,
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "IOS XE"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263622767299",
+ "version": "6.0"
+}

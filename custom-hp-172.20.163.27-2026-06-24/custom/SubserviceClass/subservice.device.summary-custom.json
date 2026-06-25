@@ -1,0 +1,14 @@
+{
+ "id": "subservice.device.summary custom",
+ "name": "subservice.device.summary",
+ "namespace": "custom",
+ "description": "Groups together all the Device subservices",
+ "params": [
+  {
+   "name": "vpnServiceId"
+  }
+ ],
+ "createTimestamp": "1780080263753314719",
+ "updateTimestamp": "1780076868329978154",
+ "version": "6.0"
+}

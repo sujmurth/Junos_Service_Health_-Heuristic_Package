@@ -1,0 +1,51 @@
+{
+ "id": "subservice.pcep.session.health custom",
+ "name": "subservice.pcep.session.health",
+ "namespace": "custom",
+ "description": "Monitor PCEP session state to all the peers configured on this device.",
+ "params": [
+  {
+   "name": "device"
+  },
+  {
+   "name": "serviceType"
+  }
+ ],
+ "rootExpressions": [
+  {
+   "evalExpression": "ListElemsAnd([ pcc_peer_state_up for pcc_peer_addr in pcc_peer_addrs])"
+  }
+ ],
+ "dependencies": [
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "pcc_peer_state_up",
+   "evalExpression": "pcc_peer_state == 'up'",
+   "symptom": {
+    "formatString": "PCEP Session Health degraded. Device: {device}, PCC-Peer: {pcc_peer_addr}",
+    "level": "DEGRADED",
+    "priority": 10
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "pcc_peer_state",
+   "evalExpression": "metric.sr.te.pcc.peer.state",
+   "paramMap": {
+    "device": "device",
+    "peer_addr": "pcc_peer_addr"
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "pcc_peer_addrs",
+   "evalExpression": "metric.sr.te.pcc.peer.addrs",
+   "paramMap": {
+    "device": "device"
+   }
+  }
+ ],
+ "createTimestamp": "1780080263698058598",
+ "updateTimestamp": "1780076868336410492",
+ "version": "6.0"
+}

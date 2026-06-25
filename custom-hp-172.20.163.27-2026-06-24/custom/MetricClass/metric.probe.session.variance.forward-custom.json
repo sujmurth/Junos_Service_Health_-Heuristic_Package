@@ -1,0 +1,42 @@
+{
+ "id": "metric.probe.session.variance.forward custom",
+ "name": "metric.probe.session.variance.forward",
+ "namespace": "custom",
+ "description": "Variance reported by a given Probe Session in forward direction.",
+ "displayLabel": "Probe Variance Forward",
+ "parameters": {
+  "device": {
+   "description": "Device of interest"
+  },
+  "peerDevice": {
+   "description": "Destination or reflector"
+  },
+  "probeSessionId": {
+   "description": "Probe Session ID"
+  },
+  "proxyDevice": {
+   "description": "Proxy device to use to collect this metric"
+  },
+  "serviceID": {
+   "description": "service ID"
+  }
+ },
+ "implementations": {
+  "Accedian": {
+   "GNMITemplateMetric": {
+    "sensorPathExact": "accedian-session:object-type/twamp-sf/monitored-objects/monitored-object[monitored-object-id={probeSessionId}][direction=0]/metrics/delay-var-p95",
+    "sensorPathConfig": "accedian-session:object-type/twamp-sf/monitored-objects/monitored-object[meta/data/name/ne_id_sender={device}]",
+    "sensorPathDeviceFeed": "accedian-session:object-type/twamp-sf/monitored-objects/monitored-object"
+   }
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "Accedian"
+  }
+ ],
+ "createTimestamp": "1780004603613986550",
+ "updateTimestamp": "1780080263624568902",
+ "version": "6.0",
+ "streamSubscriptionTag": "PCA_Probes"
+}

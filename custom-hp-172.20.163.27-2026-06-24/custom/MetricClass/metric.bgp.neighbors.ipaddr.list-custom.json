@@ -1,0 +1,61 @@
+{
+ "id": "metric.bgp.neighbors.ipaddr.list custom",
+ "name": "metric.bgp.neighbors.ipaddr.list",
+ "namespace": "custom",
+ "description": "List of IP addresses of all the configured BGP neighbors. NbrIP will be present in this list even when session is not active.",
+ "displayLabel": "BGP neighbors ip address list",
+ "parameters": {
+  "device": {
+   "description": "Device of interest"
+  }
+ },
+ "mType": {
+  "stringT": {
+
+  }
+ },
+ "mList": true,
+ "implementations": {
+  "generic IOS XR": {
+   "GNMIMetric": {
+    "sensorPathExact": "Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session/neighbor-address",
+    "sensorPathConfig": "Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/default-vrf/sessions/session"
+   },
+   "precedence": 20
+  },
+  "generic Junos": {
+   "GNMIMetric": {
+    "sensorPathExact": "openconfig:network-instances/network-instance[name=master]/protocols/protocol/bgp/neighbors/neighbor/state/neighbor-address",
+    "sensorPathConfig": "openconfig:network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor"
+   },
+   "precedence": 20
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic Junos",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "Junos"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263618093333",
+ "updateTimestamp": "1782170303876326233",
+ "version": "6.10"
+}

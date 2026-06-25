@@ -1,0 +1,114 @@
+{
+ "name": "Rule-L3VPN-NM-VPN-Node-Basic",
+ "namespace": "custom",
+ "id": "Rule-L3VPN-NM-VPN-Node-Basic custom",
+ "description": "Rule to generate subgraph corresponding to VPN Node. This subgraph shall be linked to rest of uber VPN service graph.",
+ "matchCriteria": [
+  {
+   "configSource": "SOURCE_TYPE_NSO",
+   "configSubSource": [
+    "SUBSOURCE_SERVICE_CONFIG"
+   ],
+   "matchType": "MATCH_TYPE_XPATH",
+   "matchExpression": "//vpn-node/vpn-node-id"
+  }
+ ],
+ "dependencies": [
+  {
+   "name": "L3VPN-Node-Summary",
+   "id": "subservice.l3vpn.vpn.node.summary custom",
+   "ssClass": "subservice.l3vpn.vpn.node.summary",
+   "namespace": "custom",
+   "paramExtractionMechanism": {
+    "mode": "EXTRACT_MODE_XPATH"
+   },
+   "parameters": [
+    {
+     "name": "device",
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//vpn-node/vpn-node-id"
+      }
+     ]
+    },
+    {
+     "name": "vrf",
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//vpn-service/vpn-id"
+      }
+     ]
+    }
+   ],
+   "subDependencies": [
+    "Vrf-Route-Health"
+   ],
+   "softSubDependencies": [
+    "device-health"
+   ]
+  },
+  {
+   "name": "Vrf-Route-Health",
+   "id": "subservice.vrf.route.health custom",
+   "ssClass": "subservice.vrf.route.health",
+   "namespace": "custom",
+   "paramExtractionMechanism": {
+    "mode": "EXTRACT_MODE_XPATH"
+   },
+   "parameters": [
+    {
+     "name": "device",
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//vpn-node/vpn-node-id"
+      }
+     ]
+    },
+    {
+     "name": "vpnIfAddrs",
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//vpn-node/vpn-network-accesses/vpn-network-access/ip-connection/*/local-address"
+      }
+     ]
+    },
+    {
+     "name": "vrf",
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//vpn-service/vpn-id"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "device-health",
+   "id": "subservice.device.health custom",
+   "ssClass": "subservice.device.health",
+   "namespace": "custom",
+   "paramExtractionMechanism": {
+    "mode": "EXTRACT_MODE_XPATH"
+   },
+   "parameters": [
+    {
+     "name": "device",
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//vpn-node/vpn-node-id"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "createTimestamp": "1780080263784975715",
+ "updateTimestamp": "1769642466206074662",
+ "version": "6.0"
+}

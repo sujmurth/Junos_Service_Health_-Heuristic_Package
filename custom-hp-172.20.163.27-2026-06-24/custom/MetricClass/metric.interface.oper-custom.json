@@ -1,0 +1,184 @@
+{
+ "id": "metric.interface.oper custom",
+ "name": "metric.interface.oper",
+ "namespace": "custom",
+ "description": "Interface Operational Status",
+ "displayLabel": "Interface Operational State",
+ "parameters": {
+  "device": {
+   "description": "Device to which the interface belongs"
+  },
+  "gigEthIfId": {
+   "description": "Gigabit Ethernet Interface Id. Includes subinterface id. Example: 'GigabitEthernet0/0/0/1.303' "
+  },
+  "interfaceId": {
+   "description": "Interface Id. Example: 'et-0/0/3' "
+  },
+  "subInterfaceId": {
+   "description": "Subinterface Id. Example: '4003' "
+  }
+ },
+ "mType": {
+  "stringT": {
+
+  }
+ },
+ "implementations": {
+  "Junos SNMP": {
+   "SNMPMetric": {
+    "oidPathConfig": "IF-MIB:IF-MIB/ifTable/ifEntry",
+    "oidPathExact": "IF-MIB:IF-MIB/ifTable/ifEntry[ifName={interfaceId}.{subInterfaceId}]/ifOperStatus"
+   },
+   "precedence": 2,
+   "convertArgs": {
+    "interfaceId": {
+     "argSubstitutes": [
+      {
+       "from": "FourHundredGigE",
+       "to": "et-"
+      },
+      {
+       "from": "HundredGigE",
+       "to": "et-"
+      },
+      {
+       "from": "TenGigE",
+       "to": "xe-"
+      },
+      {
+       "from": "GigabitEthernet",
+       "to": "ge-"
+      }
+     ]
+    }
+   },
+   "valMapping": {
+    "values": {
+     "1": "up",
+     "2": "down",
+     "7": "down"
+    }
+   }
+  },
+  "SNMP IOS XE": {
+   "SNMPMetric": {
+    "oidPathConfig": "IF-MIB:IF-MIB/ifTable/ifEntry",
+    "oidPathExact": "IF-MIB:IF-MIB/ifTable/ifEntry[ifName={gigEthIfId}]/ifOperStatus"
+   },
+   "precedence": 2,
+   "convertArgs": {
+    "gigEthIfId": {
+     "argSubstitutes": [
+      {
+       "from": "GigabitEthernet",
+       "to": "Gi"
+      },
+      {
+       "from": " ",
+       "to": ".SI."
+      }
+     ]
+    }
+   },
+   "valMapping": {
+    "values": {
+     "1": "up",
+     "2": "down"
+    }
+   }
+  },
+  "SNMP IOS XR": {
+   "SNMPMetric": {
+    "oidPathConfig": "IF-MIB:IF-MIB/ifTable/ifEntry",
+    "oidPathExact": "IF-MIB:IF-MIB/ifTable/ifEntry[ifName={gigEthIfId}]/ifOperStatus"
+   },
+   "precedence": 20,
+   "valMapping": {
+    "values": {
+     "1": "up",
+     "2": "down"
+    }
+   }
+  },
+  "generic IOS XE": {
+   "GNMIMetric": {
+    "sensorPathExact": "openconfig-interfaces:interfaces/interface/state[name={gigEthIfId}]/oper-status",
+    "sensorPathConfig": "openconfig-interfaces:interfaces/interface/state"
+   },
+   "precedence": 20,
+   "valMapping": {
+    "values": {
+     "DOWN": "down",
+     "UP": "up"
+    }
+   }
+  },
+  "generic IOS XR": {
+   "GNMIMetric": {
+    "sensorPathExact": "Cisco-IOS-XR-ifmgr-oper:interface-properties/data-nodes/data-node/system-view/interfaces/interface[interface-name={gigEthIfId}]/state",
+    "sensorPathConfig": "Cisco-IOS-XR-ifmgr-oper:interface-properties/data-nodes/data-node/system-view/interfaces/interface"
+   },
+   "precedence": 2
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "Junos SNMP",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "Junos"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "SNMP IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "SNMP IOS XE",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "IOS XE"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic IOS XE",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "IOS XE"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263627332860",
+ "updateTimestamp": "1782278952681947335",
+ "version": "6.20"
+}

@@ -1,0 +1,59 @@
+{
+ "id": "subservice.dynamic.l3vpn.sr.policy custom",
+ "name": "subservice.dynamic.l3vpn.sr.policy",
+ "namespace": "custom",
+ "description": "Monitors both static and dynamically initiated policy",
+ "params": [
+  {
+   "name": "device"
+  },
+  {
+   "name": "vpnServiceId"
+  },
+  {
+   "name": "vpnAddr"
+  }
+ ],
+ "rootExpressions": [
+  {
+   "evalExpression": "sr_policy_oper_up"
+  }
+ ],
+ "dynamicConfig": {
+  "ruleId": "rule.dynamic.sr.odn.policy custom",
+  "ruleParams": {
+   "device": "device",
+   "sr-policy-list": "sr-policy-list",
+   "vpnServiceId": "vpnServiceId"
+  },
+  "ruleTriggerConditions": {
+   "activate": "Len(sr-policy-list) \u003e 0 ",
+   "deactivate": "Len(sr-policy-list) == 0 || Len(sr-policy-list) \u003e 100",
+   "update": "Delta(sr-policy-list)"
+  }
+ },
+ "dependencies": [
+  {
+   "type": "DEP_TYPE_EXPRESSION",
+   "label": "sr_policy_oper_up",
+   "evalExpression": "Len(sr-policy-list) \u003e 0",
+   "symptom": {
+    "formatString": "Some SR Policy seems to be operationally down for given Device: {device}. Please check the TE dashboard for details.",
+    "level": "DEGRADED",
+    "priority": 255
+   }
+  },
+  {
+   "type": "DEP_TYPE_METRIC",
+   "label": "sr-policy-list",
+   "evalExpression": "metric.l3vpn.sr.policies.list",
+   "paramMap": {
+    "device": "device",
+    "vpnAddr": "vpnAddr",
+    "vrf": "vpnServiceId"
+   }
+  }
+ ],
+ "createTimestamp": "1780080263712968630",
+ "version": "6.0"
+}

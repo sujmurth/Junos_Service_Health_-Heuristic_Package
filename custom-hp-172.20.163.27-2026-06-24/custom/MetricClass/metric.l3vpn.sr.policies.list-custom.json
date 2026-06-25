@@ -1,0 +1,71 @@
+{
+ "id": "metric.l3vpn.sr.policies.list custom",
+ "name": "metric.l3vpn.sr.policies.list",
+ "namespace": "custom",
+ "description": "To get the list of sr policies",
+ "displayLabel": "Dynamic SR policies",
+ "parameters": {
+  "device": {
+   "description": "Device of interest"
+  },
+  "vpnAddr": {
+   "description": "interface Address"
+  },
+  "vrf": {
+   "description": "VRF Name"
+  }
+ },
+ "mType": {
+  "stringT": {
+
+  }
+ },
+ "mList": true,
+ "implementations": {
+  "generic IOS XR": {
+   "CLITemplateMetric": {
+    "sensorPathConfig": "show bgp vpnv4 unicast vrf {vrf}",
+    "sensorPathExact": "srpolicies/sr_policy",
+    "devicePackageName": "showBgpVpnv4UnicastVrf",
+    "functionName": "showBgpVpnv4UnicastVrf"
+   }
+  },
+  "generic IOS XR ipv6": {
+   "CLITemplateMetric": {
+    "sensorPathConfig": "show bgp vpnv6 unicast vrf {vrf}",
+    "sensorPathExact": "srpolicies/sr_policy",
+    "devicePackageName": "showBgpVpnv6UnicastVrf",
+    "functionName": "showBgpVpnv6UnicastVrf"
+   }
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   },
+   "addressFamily": "AddressFamily(vpnAddr) == ipv4"
+  },
+  {
+   "implementation": "generic IOS XR ipv6",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   },
+   "addressFamily": "AddressFamily(vpnAddr) == ipv6"
+  }
+ ],
+ "createTimestamp": "1780080263612171214",
+ "updateTimestamp": "1782278952690964493",
+ "version": "6.20"
+}

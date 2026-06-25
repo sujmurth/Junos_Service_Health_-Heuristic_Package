@@ -1,0 +1,76 @@
+{
+ "id": "metric.bgp.vrf.session.state custom",
+ "name": "metric.bgp.vrf.session.state",
+ "namespace": "custom",
+ "description": "BGP VRF Neighbor Session state.",
+ "displayLabel": "eBGP Session State",
+ "parameters": {
+  "device": {
+   "description": "Device of interest"
+  },
+  "neighborIp": {
+   "description": "Neighbor IP Address"
+  },
+  "vrf": {
+   "description": "VRF Name"
+  }
+ },
+ "mType": {
+  "stringT": {
+
+  }
+ },
+ "implementations": {
+  "generic IOS XR": {
+   "GNMIMetric": {
+    "sensorPathExact": "Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/vrfs/vrf[vrf-name={vrf}]/sessions/session[neighbor-address={neighborIp}]/connection-state",
+    "sensorPathConfig": "Cisco-IOS-XR-ipv4-bgp-oper:bgp/instances/instance/instance-active/vrfs/vrf/sessions/session"
+   },
+   "precedence": 20,
+   "valMapping": {
+    "values": {
+     "bgp-st-estab": "up"
+    }
+   }
+  },
+  "generic Junos": {
+   "GNMIMetric": {
+    "sensorPathExact": "openconfig:network-instances/network-instance[name={vrf}]/protocols/protocol/bgp/neighbors/neighbor[neighbor-address={neighborIp}]/state/session-state",
+    "sensorPathConfig": "openconfig:network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor"
+   },
+   "precedence": 20,
+   "valMapping": {
+    "values": {
+     "ESTABLISHED": "up"
+    }
+   }
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic Junos",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "Junos"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263604360302",
+ "updateTimestamp": "1782170303883122512",
+ "version": "6.10"
+}

@@ -1,0 +1,120 @@
+{
+ "name": "Rule-L3VPN-NM",
+ "namespace": "custom",
+ "id": "Rule-L3VPN-NM custom",
+ "description": "Rule to generate Assurance Graph for L3VPN services",
+ "matchCriteria": [
+  {
+   "configSource": "SOURCE_TYPE_NSO",
+   "configSubSource": [
+    "SUBSOURCE_SERVICE_CONFIG",
+    "SUBSOURCE_DEVICE_CONFIG"
+   ],
+   "matchType": "MATCH_TYPE_XPATH",
+   "matchExpression": "//vpn-service[@xmlns='urn:ietf:params:xml:ns:yang:ietf-l3vpn-ntw']",
+   "serviceElementConfig": [
+    {
+     "serviceElementId": "//vpn-node={*}",
+     "serviceElementRule": "Rule-L3VPN-NM-VPN-Node",
+     "namespace": "custom"
+    }
+   ]
+  }
+ ],
+ "dependencies": [
+  {
+   "name": "Path-SLA-Summary",
+   "id": "subservice.path.sla.summary custom",
+   "ssClass": "subservice.path.sla.summary",
+   "namespace": "custom",
+   "optional": true,
+   "paramExtractionMechanism": {
+    "mode": "EXTRACT_MODE_XPATH"
+   },
+   "parameters": [
+    {
+     "name": "vpnServiceId",
+     "extractionMethod": "DEP_PARAM_XPATH",
+     "extractionDetails": [
+      {
+       "extractValue": "//vpn-service/vpn-id[..//probes]"
+      }
+     ]
+    }
+   ],
+   "subDependencies": [
+    "ProbeSession-Health"
+   ]
+  },
+  {
+   "name": "ProbeSession-Health",
+   "id": "subservice.probe.session.health custom",
+   "ssClass": "subservice.probe.session.health",
+   "namespace": "custom",
+   "type": "DEP_TYPE_LIST",
+   "optional": true,
+   "paramExtractionMechanism": {
+    "mode": "EXTRACT_MODE_NATIVE_METHOD",
+    "name": "ExtractProbeSessionCombos",
+    "extractedParams": [
+     "vpnServiceId",
+     "proxyDevice",
+     "device",
+     "peerDevice",
+     "probeSessionId"
+    ]
+   },
+   "parameters": [
+    {
+     "name": "device",
+     "extractionMethod": "DEP_PARAM_NATIVE_OUTPUT",
+     "extractionDetails": [
+      {
+       "extractValue": "//native-method-output/device"
+      }
+     ]
+    },
+    {
+     "name": "peerDevice",
+     "extractionMethod": "DEP_PARAM_NATIVE_OUTPUT",
+     "extractionDetails": [
+      {
+       "extractValue": "//native-method-output/peerDevice"
+      }
+     ]
+    },
+    {
+     "name": "probeSessionId",
+     "extractionMethod": "DEP_PARAM_NATIVE_OUTPUT",
+     "extractionDetails": [
+      {
+       "extractValue": "//native-method-output/probeSessionId"
+      }
+     ]
+    },
+    {
+     "name": "proxyDevice",
+     "extractionMethod": "DEP_PARAM_NATIVE_OUTPUT",
+     "extractionDetails": [
+      {
+       "extractValue": "//native-method-output/proxyDevice"
+      }
+     ]
+    },
+    {
+     "name": "vpnServiceId",
+     "extractionMethod": "DEP_PARAM_NATIVE_OUTPUT",
+     "extractionDetails": [
+      {
+       "extractValue": "//native-method-output/vpnServiceId"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "createTimestamp": "1780004603742981497",
+ "updateTimestamp": "1782278957703306469",
+ "monitoringType": "ADVANCED",
+ "version": "6.20"
+}

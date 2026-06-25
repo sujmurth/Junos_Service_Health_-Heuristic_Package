@@ -1,0 +1,141 @@
+{
+ "id": "metric.route.vrf.local custom",
+ "name": "metric.route.vrf.local",
+ "namespace": "custom",
+ "description": "Number of local routes",
+ "displayLabel": "Local Routes",
+ "parameters": {
+  "device": {
+   "description": "Device of interest"
+  },
+  "vpnAddrs": {
+   "description": "vpn addresses"
+  },
+  "vrf": {
+   "description": "Vrf name"
+  }
+ },
+ "mType": {
+  "intT": {
+
+  }
+ },
+ "implementations": {
+  "generic IOS XR": {
+   "GNMIMetric": {
+    "sensorPathExact": "Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf[vrf-name={vrf}]/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information/active-routes-count",
+    "sensorPathConfig": "Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information"
+   },
+   "precedence": 20
+  },
+  "generic IOS XR 24ver": {
+   "GNMIMetric": {
+    "sensorPathExact": "Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf[vrf-name={vrf}]/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information/number-of-active-routes",
+    "sensorPathConfig": "Cisco-IOS-XR-ip-rib-ipv4-oper:rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information"
+   },
+   "precedence": 20
+  },
+  "generic IOS XR IPv6": {
+   "GNMIMetric": {
+    "sensorPathExact": "Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf[vrf-name={vrf}]/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information/active-routes-count",
+    "sensorPathConfig": "Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information"
+   },
+   "precedence": 20
+  },
+  "generic IOS XR IPv6 24ver": {
+   "GNMIMetric": {
+    "sensorPathExact": "Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf[vrf-name={vrf}]/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information/number-of-active-routes",
+    "sensorPathConfig": "Cisco-IOS-XR-ip-rib-ipv6-oper:ipv6-rib/vrfs/vrf/afs/af/safs/saf/ip-rib-route-table-names/ip-rib-route-table-name/protocol/local/non-as/information"
+   },
+   "precedence": 20
+  },
+  "generic Junos": {
+   "GNMIMetric": {
+    "sensorPathExact": "openconfig:network-instances/network-instance[name={vrf}]/protocols/protocol/bgp/global/state/total-prefixes",
+    "sensorPathConfig": "openconfig:network-instances/network-instance/protocols/protocol/bgp/global"
+   },
+   "precedence": 20
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    },
+    "os_version": {
+     "type": "version_range",
+     "end": "8.0.0"
+    }
+   },
+   "addressFamily": "AddressFamily(vpnAddrs) == ipv4"
+  },
+  {
+   "implementation": "generic IOS XR IPv6",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    },
+    "os_version": {
+     "type": "version_range",
+     "end": "8.0.0"
+    }
+   },
+   "addressFamily": "AddressFamily(vpnAddrs) == ipv6"
+  },
+  {
+   "implementation": "generic IOS XR 24ver",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    },
+    "os_version": {
+     "type": "version_range",
+     "start": "24"
+    }
+   },
+   "addressFamily": "AddressFamily(vpnAddrs) == ipv4"
+  },
+  {
+   "implementation": "generic IOS XR IPv6 24ver",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    },
+    "os_version": {
+     "type": "version_range",
+     "start": "24"
+    }
+   },
+   "addressFamily": "AddressFamily(vpnAddrs) == ipv6"
+  },
+  {
+   "implementation": "generic Junos",
+   "notSupported": true,
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "Junos"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263696286336",
+ "updateTimestamp": "1782170303872849044",
+ "version": "6.10"
+}

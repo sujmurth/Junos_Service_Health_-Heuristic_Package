@@ -1,0 +1,61 @@
+{
+ "id": "metric.sr.pm.liveness.state custom",
+ "name": "metric.sr.pm.liveness.state",
+ "namespace": "custom",
+ "description": "Reports SR-PM liveness-session state for a given SR policy. TODO SK(from LM): Reflect correct version numbers. Define NotSupported Impl for other versions.",
+ "displayLabel": "Liveness session state",
+ "parameters": {
+  "device": {
+   "description": "Device of interest"
+  },
+  "policyName": {
+   "description": "Name of the policy"
+  }
+ },
+ "mType": {
+  "stringT": {
+   "ifEmpty": "NotConfigured"
+  }
+ },
+ "implementations": {
+  "generic IOS XR": {
+   "GNMIMetric": {
+    "sensorPathExact": "Cisco-IOS-XR-perf-meas-oper:performance-measurement/nodes/node/sr-policies/sr-policy-details/sr-policy-detail[policy-name={policyName}]/candidate-path/liveness-detection-info/session-is-up",
+    "sensorPathConfig": "Cisco-IOS-XR-perf-meas-oper:performance-measurement/nodes/node/sr-policies/sr-policy-details/sr-policy-detail"
+   },
+   "valMapping": {
+    "values": {
+     "false": "down",
+     "true": "up"
+    }
+   }
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic IOS XR",
+   "notSupported": true,
+   "conditions": {
+    "dev_model": {
+     "type": "prefix_match",
+     "match": [
+      "Cisco IOS XRv"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263673092024",
+ "version": "6.0"
+}

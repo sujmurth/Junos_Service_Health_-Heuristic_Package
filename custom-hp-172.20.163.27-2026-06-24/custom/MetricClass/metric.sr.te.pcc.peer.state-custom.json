@@ -1,0 +1,85 @@
+{
+ "id": "metric.sr.te.pcc.peer.state custom",
+ "name": "metric.sr.te.pcc.peer.state",
+ "namespace": "custom",
+ "description": "State of the PCEP session between current device and its peer",
+ "displayLabel": "PCC Peer State",
+ "parameters": {
+  "device": {
+   "description": "Device of interest"
+  },
+  "peer_addr": {
+   "description": "PCC Peer IP Address"
+  }
+ },
+ "mType": {
+  "boolT": {
+
+  }
+ },
+ "implementations": {
+  "generic IOS XE": {
+
+  },
+  "generic IOS XR": {
+   "GNMIMetric": {
+    "sensorPathExact": "Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer[peer-addr={peer_addr}]/state-str",
+    "sensorPathConfig": "Cisco-IOS-XR-infra-xtc-agent-oper:pcc/peers/peer"
+   },
+   "precedence": 20
+  },
+  "generic Junos": {
+   "CLIMetric": {
+    "sensorPathConfig": "show path-computation-client active-pce",
+    "sensorPathExact": "routedetails/routelearnt/pce-status",
+    "devicePackageName": "showPathComputationXML",
+    "functionName": "showPathComputationXML"
+   },
+   "precedence": 20,
+   "valMapping": {
+    "values": {
+     "PCE_STATE_UP": "up"
+    }
+   }
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic Junos",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "Junos"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic IOS XE",
+   "notSupported": true,
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "IOS XE"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263683864069",
+ "updateTimestamp": "1782251328244422226",
+ "version": "6.13"
+}

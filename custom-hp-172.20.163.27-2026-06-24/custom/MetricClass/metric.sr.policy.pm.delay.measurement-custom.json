@@ -1,0 +1,46 @@
+{
+ "id": "metric.sr.policy.pm.delay.measurement custom",
+ "name": "metric.sr.policy.pm.delay.measurement",
+ "namespace": "custom",
+ "description": "Fetch SR-PM Delay Measurement configuration.",
+ "displayLabel": "SR-PM Delay Config",
+ "parameters": {
+  "device": {
+   "description": "Target device."
+  },
+  "policyName": {
+   "description": "Name of the policy"
+  }
+ },
+ "mType": {
+  "stringT": {
+   "ifEmpty": "Disabled"
+  }
+ },
+ "implementations": {
+  "generic IOS XR": {
+   "CLITemplateMetric": {
+    "sensorPathConfig": "show segment-routing traffic-eng policy name {policyName} detail",
+    "sensorPathExact": "srpm/delay-measurement",
+    "devicePackageName": "showSegmentRoutingTEPolicy",
+    "functionName": "showSegmentRoutingTEPolicy"
+   },
+   "precedence": 100
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263680309468",
+ "version": "6.0"
+}

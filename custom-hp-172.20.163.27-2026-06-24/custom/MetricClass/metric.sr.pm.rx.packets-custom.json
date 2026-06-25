@@ -1,0 +1,55 @@
+{
+ "id": "metric.sr.pm.rx.packets custom",
+ "name": "metric.sr.pm.rx.packets",
+ "namespace": "custom",
+ "description": "Number of packets received in the SR-PM",
+ "displayLabel": "SR-PM Rx Packets",
+ "parameters": {
+  "device": {
+   "description": "Device of interest"
+  },
+  "policyName": {
+   "description": "Name of the policy"
+  }
+ },
+ "mType": {
+  "intT": {
+
+  }
+ },
+ "implementations": {
+  "generic IOS XR": {
+   "GNMIMetric": {
+    "sensorPathExact": "Cisco-IOS-XR-perf-meas-oper:performance-measurement/nodes/node/sr-policies/sr-policy-details/sr-policy-detail[policy-name={policyName}]/candidate-path/last-probe-results/number-of-packets-received",
+    "sensorPathConfig": "Cisco-IOS-XR-perf-meas-oper:performance-measurement/nodes/node/sr-policies/sr-policy-details/sr-policy-detail"
+   }
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic IOS XR",
+   "notSupported": true,
+   "conditions": {
+    "dev_model": {
+     "type": "prefix_match",
+     "match": [
+      "Cisco IOS XRv"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263682690549",
+ "version": "6.0"
+}

@@ -1,0 +1,188 @@
+{
+ "id": "metric.interface.out.discards custom",
+ "name": "metric.interface.out.discards",
+ "namespace": "custom",
+ "description": "Interface number of egress discards",
+ "displayLabel": "Egress Packet Discards",
+ "parameters": {
+  "device": {
+   "description": "Device to which the interface belongs"
+  },
+  "gigEthIfId": {
+   "description": "Gigabit Ethernet Interface Id. Includes subinterface id. Example: 'GigabitEthernet0/0/0/1.100' "
+  },
+  "interfaceId": {
+   "description": "Gigabit Ethernet Interface Id. Includes interface id. Example: 'ge-0/0/1' "
+  },
+  "subInterfaceId": {
+   "description": "Gigabit Ethernet sub Interface Id. Includes sub interface id. Example: '100' "
+  }
+ },
+ "mType": {
+  "intT": {
+
+  }
+ },
+ "implementations": {
+  "Junos GNMI": {
+   "GNMIMetric": {
+    "sensorPathExact": "openconfig-interfaces:interfaces/interface[name={interfaceId}]/state/counters/out-discards",
+    "sensorPathConfig": "openconfig-interfaces:interfaces/interface[name={interfaceId}]/state/counters/out-discards"
+   },
+   "precedence": 50,
+   "convertArgs": {
+    "interfaceId": {
+     "argSubstitutes": [
+      {
+       "from": "FourHundredGigE",
+       "to": "et-"
+      },
+      {
+       "from": "HundredGigE",
+       "to": "et-"
+      },
+      {
+       "from": "TenGigE",
+       "to": "xe-"
+      },
+      {
+       "from": "GigabitEthernet",
+       "to": "ge-"
+      }
+     ]
+    }
+   }
+  },
+  "Junos SNMP": {
+   "SNMPMetric": {
+    "oidPathConfig": "IF-MIB:IF-MIB/ifTable/ifEntry",
+    "oidPathExact": "IF-MIB:IF-MIB/ifTable/ifEntry[ifName={interfaceId}.{subInterfaceId}]/ifOutDiscards"
+   },
+   "precedence": 2,
+   "convertArgs": {
+    "interfaceId": {
+     "argSubstitutes": [
+      {
+       "from": "FourHundredGigE",
+       "to": "et-"
+      },
+      {
+       "from": "HundredGigE",
+       "to": "et-"
+      },
+      {
+       "from": "TenGigE",
+       "to": "xe-"
+      },
+      {
+       "from": "GigabitEthernet",
+       "to": "ge-"
+      }
+     ]
+    }
+   }
+  },
+  "SNMP IOS XE": {
+   "SNMPMetric": {
+    "oidPathConfig": "IF-MIB:IF-MIB/ifTable/ifEntry",
+    "oidPathExact": "IF-MIB:IF-MIB/ifTable/ifEntry[ifName={gigEthIfId}]/ifOutDiscards"
+   },
+   "precedence": 2,
+   "convertArgs": {
+    "gigEthIfId": {
+     "argSubstitutes": [
+      {
+       "from": "GigabitEthernet",
+       "to": "Gi"
+      },
+      {
+       "from": " ",
+       "to": ".SI."
+      }
+     ]
+    }
+   }
+  },
+  "SNMP IOS XR": {
+   "SNMPMetric": {
+    "oidPathConfig": "IF-MIB:IF-MIB/ifTable/ifEntry",
+    "oidPathExact": "IF-MIB:IF-MIB/ifTable/ifEntry[ifName={gigEthIfId}]/ifOutDiscards"
+   },
+   "precedence": 20
+  },
+  "generic IOS XE": {
+   "GNMIMetric": {
+    "sensorPathExact": "openconfig-interfaces:interfaces/interface/state[name={gigEthIfId}]/counters/out-discards",
+    "sensorPathConfig": "openconfig-interfaces:interfaces/interface/state"
+   },
+   "precedence": 20
+  },
+  "generic IOS XR": {
+   "GNMIMetric": {
+    "sensorPathExact": "Cisco-IOS-XR-infra-statsd-oper:infra-statistics/interfaces/interface[interface-name={gigEthIfId}]/latest/generic-counters/output-drops",
+    "sensorPathConfig": "Cisco-IOS-XR-infra-statsd-oper:infra-statistics/interfaces/interface/latest/generic-counters"
+   },
+   "precedence": 2
+  }
+ },
+ "matcher": [
+  {
+   "implementation": "Junos SNMP",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "Junos"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "SNMP IOS XR",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "CISCO IOS XR"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "SNMP IOS XE",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "IOS XE"
+     ]
+    }
+   }
+  },
+  {
+   "implementation": "generic IOS XE",
+   "conditions": {
+    "os_model": {
+     "type": "exact_match",
+     "match": [
+      "IOS XE"
+     ]
+    }
+   }
+  }
+ ],
+ "createTimestamp": "1780080263692351686",
+ "updateTimestamp": "1782278952684779998",
+ "version": "6.20"
+}

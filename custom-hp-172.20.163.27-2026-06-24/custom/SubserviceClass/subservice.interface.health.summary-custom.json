@@ -1,0 +1,14 @@
+{
+ "id": "subservice.interface.health.summary custom",
+ "name": "subservice.interface.health.summary",
+ "namespace": "custom",
+ "description": "Groups together all the interface health subservices.",
+ "params": [
+  {
+   "name": "vpnServiceId"
+  }
+ ],
+ "createTimestamp": "1780080263704976508",
+ "updateTimestamp": "1780076848276630543",
+ "version": "6.0"
+}

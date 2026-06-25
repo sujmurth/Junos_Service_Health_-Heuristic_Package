@@ -1,0 +1,107 @@
+{
+ "id": "Silver_L3VPN_ConfigProfile custom",
+ "name": "Silver_L3VPN_ConfigProfile",
+ "namespace": "custom",
+ "description": "Thresholds to use for Silver L3VPN services",
+ "rules": [
+  {
+   "name": "Rule-L3VPN-NM",
+   "namespace": "custom"
+  },
+  {
+   "name": "Rule-L3VPN-NM-Basic",
+   "namespace": "custom"
+  }
+ ],
+ "values": {
+  "CPU_THRESHOLD_MAX": {
+   "description": "Threshold for acceptable CPU usage on the device.",
+   "type": "VAL_FLOAT",
+   "floatVal": {
+    "unit": "PERCENT",
+    "val": 80.5
+   }
+  },
+  "MEMFREE_THRESHOLD_MIN": {
+   "description": "Threshold for minimum free memory to be available on the device.",
+   "type": "VAL_FLOAT",
+   "floatVal": {
+    "unit": "BYTES",
+    "val": 1000000000
+   }
+  },
+  "MEMFREE_THRESHOLD_MIN_JUNIPER": {
+   "description": "Threshold for minimum free memory to be available on the device.",
+   "type": "VAL_FLOAT",
+   "floatVal": {
+    "unit": "BYTES",
+    "val": 2000
+   }
+  },
+  "PROBE_DELAY_THRESHOLD": {
+   "description": "High Threshold for probe reported latency health checks",
+   "type": "VAL_INT",
+   "intVal": {
+    "unit": "USEC",
+    "val": "100000"
+   }
+  },
+  "PROBE_LOSS_THRESHOLD": {
+   "description": "Threshold for acceptable packet loss rate",
+   "type": "VAL_INT",
+   "intVal": {
+    "unit": "PERCENT",
+    "val": "2"
+   }
+  },
+  "PROBE_VARIANCE_THRESHOLD": {
+   "description": "High Threshold for probe reported variance health checks",
+   "type": "VAL_INT",
+   "intVal": {
+    "unit": "USEC",
+    "val": "20000"
+   }
+  },
+  "SRPM_DELAY_THRESHOLD": {
+   "description": "High Threshold for SR-PM latency health checks",
+   "type": "VAL_INT",
+   "intVal": {
+    "unit": "USEC",
+    "val": "500000"
+   }
+  },
+  "SRPM_PACKET_LOSS_THRESHOLD": {
+   "description": "Threshold acceptable for SR-PM packet loss",
+   "type": "VAL_FLOAT",
+   "floatVal": {
+    "unit": "PERCENT",
+    "val": 2
+   }
+  },
+  "SRPM_VARIANCE_THRESHOLD": {
+   "description": "High Threshold for SR-PM variance health checks",
+   "type": "VAL_INT",
+   "intVal": {
+    "unit": "USEC",
+    "val": "500000"
+   }
+  },
+  "VPN_INTF_PKT_DISCARDS_THRESHOLD": {
+   "description": "Acceptable delta of in(or out) packet discards expected between polling intervals",
+   "type": "VAL_INT",
+   "intVal": {
+    "val": "20"
+   }
+  },
+  "VPN_INTF_PKT_ERROR_THRESHOLD": {
+   "description": "Acceptable delta of in(or out) packet errors expected between polling intervals",
+   "type": "VAL_INT",
+   "intVal": {
+    "val": "20"
+   }
+  }
+ },
+ "createTimestamp": "1780080263798188863",
+ "updateTimestamp": "1769642466226987817",
+ "version": "6.0"
+}

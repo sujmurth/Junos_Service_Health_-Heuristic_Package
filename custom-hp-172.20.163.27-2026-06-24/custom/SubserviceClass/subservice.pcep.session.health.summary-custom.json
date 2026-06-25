@@ -1,0 +1,14 @@
+{
+ "id": "subservice.pcep.session.health.summary custom",
+ "name": "subservice.pcep.session.health.summary",
+ "namespace": "custom",
+ "description": "Groups together all the PCEP session health subservices.",
+ "params": [
+  {
+   "name": "vpnServiceId"
+  }
+ ],
+ "createTimestamp": "1780080263775527449",
+ "updateTimestamp": "1780076853289220287",
+ "version": "6.0"
+}
