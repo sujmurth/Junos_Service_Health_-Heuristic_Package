@@ -340,3 +340,37 @@ For `VPN-4003`, the expected result is that Junos `node-19` service health moves
 
 That is a correct service health outcome. It means CNC collected the metric and evaluated the health expression, rather than failing to collect the feed.
 
+## Verification Snapshots
+
+The screenshots below show the post-import verification state for `VPN-4003`.
+
+### Transport SR-MPLS View
+
+The VPN service transport view shows SR-MPLS paths for color `4003`, including paths where `node-19` is a headend or endpoint. This verifies that the service transport view is populated after monitoring is enabled.
+
+![VPN-4003 transport SR-MPLS view with node-19 paths](images/verification-transport-sr-mpls.png)
+
+### Expanded Assurance Graph
+
+The expanded assurance graph shows `VPN-4003` decomposed into node-level and feature-level subservices for `node-3`, `node-19`, and `node-4`. The graph includes interface health, VRF route health, BGP neighbor health, PCEP session health, dynamic SR policy health, and device health.
+
+![VPN-4003 expanded assurance graph with node-19 subservices](images/verification-assurance-graph-expanded.png)
+
+### Service Health Status
+
+The final service details view shows:
+
+```text
+Monitoring status: Success
+Monitoring settings: Advanced | Gold_L3VPN_ConfigProfile custom
+Sub services: 27 (Good: 17, Degraded: 10, Down: 0)
+Active symptoms: 4
+```
+
+At this point the remaining items are service symptoms, not collection failures. This is the target behavior for the custom HP: CNC can collect the metric feed and evaluate health, while real network conditions remain visible as degraded symptoms.
+
+![VPN-4003 service health monitoring success with remaining symptoms](images/verification-service-health-success.png)
+
+## Related Blog Draft
+
+A longer XRdocs-style explanation of the lab, service provisioning, route policy, SR-TE ODN behavior, verification steps, and metric design was prepared separately during this work. This repository is focused on the package artifacts and operational README.
