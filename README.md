@@ -10,7 +10,6 @@ The repository includes:
 - A Junos PCEP Data Collector aggregate CLI package.
 - Custom HP rules, subservices, metrics, and plugin logic for multivendor L3VPN service health.
 
-Do not commit lab credentials or device passwords to this repository.
 
 ## Repository Contents
 
@@ -66,17 +65,6 @@ subservice.l3vpn.vpn.node.summary custom
 |-- subservice.dynamic.l3vpn.sr.policy custom
 `-- subservice.device.health custom
 ```
-
-## Important HP Object Versions
-
-| Area | Version | Notes |
-| --- | ---: | --- |
-| `Rule-L3VPN-NM custom` | `6.20` | Main IETF L3VPN service rule. |
-| `Rule-L3VPN-NM-VPN-Node custom` | `6.20` | Per-node L3VPN graph rule. |
-| Junos interface metrics | `6.20` | SNMP IF-MIB support for Junos logical interfaces and `lowerLayerDown` mapping. |
-| Junos BGP, route, CPU, and memory metrics | `6.10` | OpenConfig and SNMP collection updates for Junos. |
-| Junos PCEP peer metrics | `6.13` | CLI metric implementation using the custom Data Collector package. |
-| Core subservice classes | `6.0` | Base service health model. |
 
 ## Custom HP Directory
 
